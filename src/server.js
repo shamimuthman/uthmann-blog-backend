@@ -8,7 +8,12 @@ const postRoutes = require('./routes/posts');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://uthman-blog.onrender.com',
+    'http://localhost:4321'
+  ]
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 

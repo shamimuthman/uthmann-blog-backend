@@ -59,13 +59,18 @@ ${content}
     });
 
   } catch (error) {
-    console.error("POST ERROR:", error);
+    console.error(
+      error.response?.data || error.message || error
+    );
 
-    return res.status(500).json({
-      success: false,
-      message: "Failed to publish post"
-    });
-  }
+  res.status(500).json({
+    success: false,
+    message:
+      error.response?.data?.message ||
+      error.message ||
+      'Failed to publish post'
+  });
+}
 });
 
 module.exports = router;

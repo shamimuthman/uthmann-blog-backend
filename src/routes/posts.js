@@ -12,9 +12,17 @@ router.post('/', authMiddleware, async (req, res) => {
       title,
       description,
       content,
-      tags,
-      image
+      tags = [],
+      image = ""
     } = req.body;
+
+    // 🔐 basic validation
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and content are required"
+      });
+    }
 
     const slug = slugify(title, {
       lower: true,
@@ -22,12 +30,15 @@ router.post('/', authMiddleware, async (req, res) => {
     });
 
     const date = new Date().toISOString();
+
+    const safeTags = Array.isArray(tags) ? tags : [];
+
     const markdown = `---
 title: "${title}"
-description: "${description}"
+description: "${description || ""}"
 pubDate: "${date}"
 heroImage: "${image}"
-tags: [${tags.map(tag => `"${tag}"`).join(', ')}]
+tags: [${safeTags.map(tag => `"${tag}"`).join(', ')}]
 ---
 
 ${content}
@@ -41,17 +52,18 @@ ${content}
       `Create blog post: ${title}`
     );
 
-    res.json({
+    return res.json({
       success: true,
       slug,
-      message: 'Blog post published successfully'
+      message: "Blog post published successfully"
     });
-  } catch (error) {
-    console.error(error);
 
-    res.status(500).json({
+  } catch (error) {
+    console.error("POST ERROR:", error);
+
+    return res.status(500).json({
       success: false,
-      message: 'Failed to publish post'
+      message: "Failed to publish post"
     });
   }
 });

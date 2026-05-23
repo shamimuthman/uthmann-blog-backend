@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Backend Running' });
 });
 
-
+console.log("Connecting to database...");
 
 const PORT = process.env.PORT || 5000;
 console.log(`Starting server on port ${PORT}...`);

@@ -33,6 +33,7 @@ app.get('/debug-env', (req, res) => {
     JWT_SECRET_EXISTS: !!process.env.JWT_SECRET
   });
 });
+console.log
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

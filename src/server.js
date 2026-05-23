@@ -12,10 +12,12 @@ const app = express();
 app.use(cors({
   origin: [
     'https://uthman-blog.onrender.com',
+    'https://uthmann-blog-backend-1.onrender.com',
     'http://localhost:4321'
-  ]
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
-
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 

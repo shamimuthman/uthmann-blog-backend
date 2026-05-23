@@ -38,7 +38,9 @@ title: "${title}"
 description: "${description || ""}"
 pubDate: "${date}"
 heroImage: "${image}"
-tags: [${safeTags.map(tag => `"${tag}"`).join(', ')}]
+tags: [${(tags || [])
+  .map(tag => `"${tag}"`)
+  .join(', ')}]
 ---
 
 ${content}

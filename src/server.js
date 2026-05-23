@@ -26,13 +26,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Backend Running' });
 });
 
-app.get('/debug-env', (req, res) => {
-  res.json({
-    ADMIN_USERNAME: process.env.ADMIN_USERNAME,
-    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-    JWT_SECRET_EXISTS: !!process.env.JWT_SECRET
-  });
-});
+
 
 const PORT = process.env.PORT || 5000;
 

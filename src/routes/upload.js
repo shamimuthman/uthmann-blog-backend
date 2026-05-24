@@ -1,7 +1,15 @@
 const express = require("express");
 const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
 
 const router = express.Router();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const storage = multer.memoryStorage();
 
@@ -20,13 +28,28 @@ router.post(
         });
       }
 
-      // TEMP TEST RESPONSE
-      // later you'll upload to github/cloudinary
+      const result = await new Promise(
+        (resolve, reject) => {
+          const stream =
+            cloudinary.uploader.upload_stream(
+              {
+                folder: "blog"
+              },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+
+          streamifier
+            .createReadStream(req.file.buffer)
+            .pipe(stream);
+        }
+      );
 
       res.json({
         success: true,
-        imageUrl:
-          "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+        imageUrl: result.secure_url
       });
 
     } catch (error) {

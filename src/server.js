@@ -1,3 +1,5 @@
+const uploadRoutes = require('./routes/upload');
+
 console.log("SERVER STARTING...");
 require('dotenv').config();
 
@@ -9,6 +11,7 @@ const postRoutes = require('./routes/posts');
 
 const app = express();
 
+app.use('/api/upload', uploadRoutes);
 app.use(cors({
   origin: [
     'https://uthman-blog.onrender.com',
